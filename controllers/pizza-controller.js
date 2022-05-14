@@ -5,6 +5,13 @@ const pizzaController = {
     // gets all the pizzas 
     getAllPizza(req, res) {
         Pizza.find({})
+        // populate is === include in sql 
+            .populate({
+                path: 'comments',
+                select: '-__v'
+            })
+            .select('-__v')
+            .sort({ _id: -1 })
             .then(dbPizzaData => res.json(dbPizzaData))
             .catch(err => {
                 console.log(err);
@@ -17,6 +24,11 @@ const pizzaController = {
     // descructured the req obj to params 
     getPizzaById({ params }, res) {
         Pizza.findOne({ _id: params.id })
+        .populate({
+            path: 'comments',
+            select: '-__v'
+        })
+        .select('-__v')
             .then(dbPizzaData => {
                 if (!dbPizzaData) {
                     // 404 = not found // server cannot find the requested resource
