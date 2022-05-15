@@ -53,7 +53,7 @@ const pizzaController = {
     // Update pizza by id
     updatePizza({params, body}, res){
         // { new: true } tells mongoose to send the new document and not the original document
-        Pizza.findOneAndUpdate({ _id: params.id }, body, { new: true })
+        Pizza.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
         .then(dbPizzaData => {
             if (!dbPizzaData){
                 res.status(404).json({ message: 'no pizza found with this id'})
